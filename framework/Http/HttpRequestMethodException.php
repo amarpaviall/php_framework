@@ -2,6 +2,6 @@
 
 namespace Amar\Framework\Http;
 
-class HttpRequestMethodException extends \Exception{
+class HttpRequestMethodException extends HttpException {
   
 }

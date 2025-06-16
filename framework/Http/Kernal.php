@@ -15,6 +15,8 @@ class Kernal
       [$routeHandler, $vars] = $this->router->dispatch($request);
 
     $response = call_user_func_array($routeHandler, $vars);
+    } catch (HttpException $e) {
+      $response = new Response($e->getMessage(), $e->getStatusCode());
     } catch (\Exception $e) {
       $response = new Response($e->getMessage(), 400);
     }
