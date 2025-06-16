@@ -1,0 +1,23 @@
+{
+  "name": "amar/php-framework-pro",
+  "description": "A PHP framework tutorial project",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Amarpreet",
+      "email": "info@amar.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Amar\\Framework\\": "src/"
+    }
+  },
+  "require-dev": {
+    "symfony/var-dumper": "7.4.x-dev"
+  },
+  "require": {
+    "nikic/fast-route": "1.3.*"
+  }
+}
