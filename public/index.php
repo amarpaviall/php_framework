@@ -14,7 +14,7 @@ use Amar\Framework\Http\Request;
 
 $request = Request::createFromGlobals();
 
-$kernal = $container->get(Kernal::class);
+$kernal = $container->get(Kernal::class, 1);
 
 $response = $kernal->handle($request);
 

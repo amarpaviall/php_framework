@@ -8,11 +8,12 @@ use Amar\Framework\Http\HttpException;
 use Amar\Framework\Http\HttpRequestMethodException;
 use function FastRoute\simpleDispatcher;
 use Amar\Framework\Http\Request;
+use Psr\Container\ContainerInterface;
 
 class Router implements RouterInterface
 {
   private array $routes;
-  public function dispatch(Request $request): array
+  public function dispatch(Request $request, ContainerInterface $container): array
   {
 
     $routeInfo = $this->extractRouteInfo($request);
@@ -21,8 +22,11 @@ class Router implements RouterInterface
     [$handler, $vars] = $routeInfo;
 
     if (is_array($handler)) {
-      [$controller, $method] = $handler;
-      $handler = [new $controller, $method];
+      [$controllerId, $method] = $handler;
+      $controller = $container->get($controllerId);
+      $handler = [$controller, $method];
+
+      //dd(new $container);
     }
 
 
