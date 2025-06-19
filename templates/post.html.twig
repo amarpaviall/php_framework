@@ -1,8 +1,6 @@
-<!-- /templates/home.html.twig -->
-<!doctype html>
-<html lang="en">
-<body>
+{% extends 'base.html.twig' %}
+
+{% block main %}
 <h1>Welcome to Tech</h1>
-<p>you're learning about Post ID {{ postId }}</p>
-</body>
-</html>
+<h2>you're learning about Post ID {{ postId }}</h2>
+{% endblock %}
