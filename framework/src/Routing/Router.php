@@ -26,7 +26,7 @@ class Router implements RouterInterface
       $controller = $container->get($controllerId);
       $handler = [$controller, $method];
 
-      //dd(new $container);
+      //dd($handler);
     }
 
 
