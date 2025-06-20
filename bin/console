@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+
+<?php // bin/console
+
+// set a base path
+
+use Amar\Framework\Console\Kernal;
+
+define('BASE_PATH', dirname(__DIR__));
+
+// require autoloading
+require_once BASE_PATH . '/vendor/autoload.php';
+
+// require the container
+/** @var \Psr\Container\ContainerInterface $container */
+$container = require BASE_PATH . '/config/services.php';
+
+$kernal = $container->get(Kernal::class);
+
+// Call a handle method on the Kernel, return the console application status code
+$status = $kernal->handle();
+
+// exit with that status
+exit($status);

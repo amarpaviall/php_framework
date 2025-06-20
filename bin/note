@@ -1,0 +1,16 @@
+A hashbang (also called a shebang) is the first line in a script file that tells the system which interpreter to use when executing the script from the command line.
+
+For PHP, the hashbang looks like this:
+
+#!/usr/bin/env php
+
+steps to make console file to treat as php file :
+Open the file in VS Code.
+
+    Press Ctrl+Shift+P (or Cmd+Shift+P on Mac) to open the Command Palette.
+
+    Type and select: Change Language Mode.
+
+    Type or select: PHP.
+
+    🔁 This is temporary — it lasts until you close the file.
