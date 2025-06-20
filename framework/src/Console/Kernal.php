@@ -9,7 +9,10 @@ use ReflectionClass;
 
 final class Kernal
 {
-  public function __construct(private ContainerInterface $container) {}
+  public function __construct(
+    private ContainerInterface $container,
+    private Application $application
+  ) {}
   public function handle(): int
   {
     //dd("got here");
@@ -18,8 +21,9 @@ final class Kernal
     $this->registerCommands();
     // Run the console application, returning a status code
 
+    $status = $this->application->run();
     // return the status code
-    return 0;
+    return $status;
   }
 
   private function registerCommands(): void
@@ -52,6 +56,6 @@ final class Kernal
       }
     }
 
-    dd($this->container);
+    //dd($this->container);
   }
 }

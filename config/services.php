@@ -1,5 +1,6 @@
 <?php
 
+use Amar\Framework\Console\Application;
 use Amar\Framework\Controller\AbstractController;
 use Amar\Framework\Dbal\ConnectionFactory;
 use Amar\Framework\Http\Kernal;
@@ -49,6 +50,10 @@ $container->add(Kernal::class)
   ->addArgument(RouterInterface::class)
   ->addArgument($container);
 
+$container->add(Application::class)->addArgument($container);
+$container->add(\Amar\Framework\Console\Kernal::class)
+  ->addArguments([$container, Application::class]);
+
 $container->addShared('filesystem-loader', FilesystemLoader::class)
   ->addArgument(new StringArgument($templatesPath));
 
@@ -71,7 +76,6 @@ $container->addShared(Connection::class, function () use ($container): Connectio
   return $container->get(ConnectionFactory::class)->create();
 });
 
-$container->add(\Amar\Framework\Console\Kernal::class)
-  ->addArgument($container);
+
 
 return $container;
