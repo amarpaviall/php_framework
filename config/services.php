@@ -31,6 +31,11 @@ $container->add('APP_ENV', new StringArgument($appEnv));
 
 $databaseUrl = 'sqlite:///' . BASE_PATH . '/var/db.sqlite';
 
+$container->add(
+  'base-commands-namespace',
+  new StringArgument("Amar\\Framework\\Console\\Command\\")
+);
+
 // services
 
 $container->add(RouterInterface::class, Router::class);
@@ -66,10 +71,7 @@ $container->addShared(Connection::class, function () use ($container): Connectio
   return $container->get(ConnectionFactory::class)->create();
 });
 
-// dd($container->addShared(Connection::class, function () use ($container): Connection {
-//   $factory =  $container->get(ConnectionFactory::class);
-//   return $factory->create();
-// }));
-
+$container->add(\Amar\Framework\Console\Kernal::class)
+  ->addArgument($container);
 
 return $container;
