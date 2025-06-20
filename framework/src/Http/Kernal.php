@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Amar\Framework\Http;
 
 use Amar\Framework\Routing\RouterInterface;
+use Doctrine\DBAL\Connection;
 use Exception;
 use Psr\Container\ContainerInterface;
 
@@ -20,7 +21,7 @@ class Kernal
   public function handle(Request $request): Response
   {
     try {
-
+      //dd($this->container->get(Connection::class));
       //throw new Exception('EXCEPTION IS KERNAL');
 
       [$routeHandler, $vars] = $this->router->dispatch($request, $this->container);
