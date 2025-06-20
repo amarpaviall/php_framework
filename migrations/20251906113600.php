@@ -1,7 +1,8 @@
 <?php
 
 return new class {
-  public function up() : void {
+  public function up(): void
+  {
     echo get_class($this) . ' "up" . method is called' . PHP_EOL;
   }
 
@@ -9,4 +10,4 @@ return new class {
   {
     echo get_class($this) . ' "down" . method is called' . PHP_EOL;
   }
-}
+};
