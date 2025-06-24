@@ -6,9 +6,12 @@ use Amar\Framework\Controller\AbstractController;
 use Amar\Framework\Http\Request;
 use Amar\Framework\Http\Response;
 use App\Entity\Post;
+use App\Repository\PostMapper;
 
 class PostController extends AbstractController
 {
+
+  public function __construct(private PostMapper $postMapper) {}
 
   public function show(int $id): Response
   {
@@ -31,6 +34,7 @@ class PostController extends AbstractController
     $body = $this->request->postParams['body'];
 
     $post = Post::create($title, $body);
+    $this->postMapper->save($post);
     dd($post);
   }
 }
