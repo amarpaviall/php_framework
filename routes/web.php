@@ -8,6 +8,7 @@ return [
   ['GET', '/', [HomeController::class, 'index']],
   ['GET', '/post/{id:\d+}', [PostController::class, 'show']],
   ['GET', '/posts', [PostController::class, 'create']],
+  ['POST', '/posts', [PostController::class, 'store']],
   ['GET', '/hello/{name:.+}', function (string $name) {
     return new Response("Hello $name");
   }],
