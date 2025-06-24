@@ -1,6 +1,7 @@
 <?php
 
 use Amar\Framework\Console\Application;
+use Amar\Framework\Console\Command\MigrateDatabase;
 use Amar\Framework\Controller\AbstractController;
 use Amar\Framework\Dbal\ConnectionFactory;
 use Amar\Framework\Http\Kernal;
@@ -67,15 +68,20 @@ $container->inflector(AbstractController::class)
 
 //dd($databaseUrl);
 
+// $container->add(ConnectionFactory::class)
+//   ->addArguments([
+//     new \League\Container\Argument\Literal\StringArgument($databaseUrl)
+//   ]);
 $container->add(ConnectionFactory::class)
-  ->addArguments([
-    new \League\Container\Argument\Literal\StringArgument($databaseUrl)
-  ]);
+  ->addArgument($databaseUrl); // just pass the string directly
 
 $container->addShared(Connection::class, function () use ($container): Connection {
   return $container->get(ConnectionFactory::class)->create();
 });
 
-
+$container->add(
+  'database:migrations:migrate',
+  MigrateDatabase::class
+)->addArgument(Connection::class);
 
 return $container;

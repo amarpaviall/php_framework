@@ -29,6 +29,6 @@
     "league/container": "5.x-dev",
     "symfony/dotenv": "7.4.x-dev",
     "twig/twig": "^3.0",
-    "doctrine/dbal": "5.0.x-dev"
+    "doctrine/dbal": "^3.6"
   }
 }
