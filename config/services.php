@@ -7,13 +7,15 @@ use Amar\Framework\Dbal\ConnectionFactory;
 use Amar\Framework\Http\Kernal;
 use Amar\Framework\Routing\Router;
 use Amar\Framework\Routing\RouterInterface;
+use Amar\Framework\Session\Session;
+use Amar\Framework\Session\SessionInterface;
+use Amar\Framework\Template\TwigFactory;
 use Doctrine\DBAL\Connection;
 use League\Container\Argument\Literal\ArrayArgument;
 use League\Container\Argument\Literal\StringArgument;
 use League\Container\ReflectionContainer;
 use Symfony\Component\Dotenv\Dotenv;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
+
 
 $dotenv = new Dotenv();
 $dotenv->load(BASE_PATH . '/.env');
@@ -55,11 +57,25 @@ $container->add(Application::class)->addArgument($container);
 $container->add(\Amar\Framework\Console\Kernal::class)
   ->addArguments([$container, Application::class]);
 
-$container->addShared('filesystem-loader', FilesystemLoader::class)
-  ->addArgument(new StringArgument($templatesPath));
+// $container->addShared('filesystem-loader', FilesystemLoader::class)
+//   ->addArgument(new StringArgument($templatesPath));
 
-$container->addShared('twig', Environment::class)
-  ->addArgument('filesystem-loader');
+// $container->addShared('twig', Environment::class)
+//   ->addArgument('filesystem-loader');
+
+$container->addShared(SessionInterface::class, Session::class);
+
+$container->add(
+  'template-renderer-factory',
+  TwigFactory::class
+)->addArguments([
+  SessionInterface::class,
+  new StringArgument($templatesPath)
+]);
+
+$container->addShared('twig', function () use ($container) {
+  return $container->get('template-renderer-factory')->create();
+});
 
 $container->add(AbstractController::class);
 $container->inflector(AbstractController::class)
