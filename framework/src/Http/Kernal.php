@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Amar\Framework\Http;
 
+use Amar\Framework\Http\Middleware\RequestHandlerInterface;
 use Amar\Framework\Routing\RouterInterface;
 use Doctrine\DBAL\Connection;
 use Exception;
@@ -14,7 +15,8 @@ class Kernal
   private string $appEnv;
   public function __construct(
     private RouterInterface $router,
-    private ContainerInterface $container
+    private ContainerInterface $container,
+    private RequestHandlerInterface $requestHandler
   ) {
     $this->appEnv = $this->container->get('APP_ENV');
   }
@@ -24,9 +26,8 @@ class Kernal
       //dd($this->container->get(Connection::class));
       //throw new Exception('EXCEPTION IS KERNAL');
 
-      [$routeHandler, $vars] = $this->router->dispatch($request, $this->container);
 
-      $response = call_user_func_array($routeHandler, $vars);
+      $response = $this->requestHandler->handle($request);
     } catch (\Exception $exception) {
       $response = $this->createExceptionResponse($exception);
     }

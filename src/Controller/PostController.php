@@ -6,6 +6,7 @@ use Amar\Framework\Controller\AbstractController;
 use Amar\Framework\Http\RedirectResponse;
 use Amar\Framework\Http\Request;
 use Amar\Framework\Http\Response;
+use Amar\Framework\Session\SessionInterface;
 use App\Entity\Post;
 use App\Repository\PostMapper;
 use App\Repository\PostRepository;
@@ -15,7 +16,8 @@ class PostController extends AbstractController
 
   public function __construct(
     private PostMapper $postMapper,
-    private PostRepository $postRepository
+    private PostRepository $postRepository,
+    private SessionInterface $session
   ) {}
 
   public function show(int $id): Response
@@ -40,6 +42,7 @@ class PostController extends AbstractController
 
     $post = Post::create($title, $body);
     $this->postMapper->save($post);
+    $this->session->setFlash('success', sprintf('Post "%s" successfully created', $title));
 
     return new RedirectResponse('/posts');
     //dd($post);

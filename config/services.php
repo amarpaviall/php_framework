@@ -5,6 +5,9 @@ use Amar\Framework\Console\Command\MigrateDatabase;
 use Amar\Framework\Controller\AbstractController;
 use Amar\Framework\Dbal\ConnectionFactory;
 use Amar\Framework\Http\Kernal;
+use Amar\Framework\Http\Middleware\RequestHandler;
+use Amar\Framework\Http\Middleware\RequestHandlerInterface;
+use Amar\Framework\Http\Middleware\RouteDispatch;
 use Amar\Framework\Routing\Router;
 use Amar\Framework\Routing\RouterInterface;
 use Amar\Framework\Session\Session;
@@ -49,9 +52,15 @@ $container->extend(RouterInterface::class)->addMethodCall(
   [new ArrayArgument($routes)]
 );
 
+$container->add(RequestHandlerInterface::class, RequestHandler::class)->addArgument($container);
+
+
 $container->add(Kernal::class)
-  ->addArgument(RouterInterface::class)
-  ->addArgument($container);
+  ->addArguments([
+    RouterInterface::class,
+    $container,
+    RequestHandlerInterface::class
+  ]);
 
 $container->add(Application::class)->addArgument($container);
 $container->add(\Amar\Framework\Console\Kernal::class)
@@ -102,5 +111,12 @@ $container->add(
   Connection::class,
   new StringArgument(BASE_PATH . '/migrations')
 ]);
+
+$container->add(RouteDispatch::class)->addArguments(
+  [
+    RouterInterface::class,
+    $container
+  ]
+);
 
 return $container;
