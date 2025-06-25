@@ -11,6 +11,7 @@ use Psr\Container\ContainerInterface;
 class RequestHandler implements RequestHandlerInterface
 {
   private array $middleware = [
+    StartsSession::class,
     Authenticate::class,
     //Success::class,
     RouteDispatch::class

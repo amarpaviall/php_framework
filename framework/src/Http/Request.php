@@ -1,29 +1,47 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Amar\Framework\Http;
 
-class Request 
+use Amar\Framework\Session\SessionInterface;
+
+class Request
 {
-  public function __construct(public readonly array $getParams,
-  public readonly array $postParams,
-  public readonly array $cookies,
-  public readonly array $files,
-  public readonly array $server) 
-  {}
-  public static function createFromGlobals() :static
+  private SessionInterface $session;
+  public function __construct(
+    public readonly array $getParams,
+    public readonly array $postParams,
+    public readonly array $cookies,
+    public readonly array $files,
+    public readonly array $server
+  ) {}
+  public static function createFromGlobals(): static
   {
-    return new static($_GET,
-    $_POST,
-    $_COOKIE,
-    $_FILES,
-    $_SERVER);
+    return new static(
+      $_GET,
+      $_POST,
+      $_COOKIE,
+      $_FILES,
+      $_SERVER
+    );
   }
 
   public function getPathInfo(): string
- {
-   return strtok($this->server['REQUEST_URI'], "?");
- }
-  public function getMethod(){
-   return $this->server['REQUEST_METHOD'];
+  {
+    return strtok($this->server['REQUEST_URI'], "?");
+  }
+  public function getMethod()
+  {
+    return $this->server['REQUEST_METHOD'];
+  }
+  public function getSession(): SessionInterface
+  {
+    return $this->session;
+  }
+
+  public function setSession(SessionInterface $session): void
+  {
+    $this->session = $session;
   }
 }
