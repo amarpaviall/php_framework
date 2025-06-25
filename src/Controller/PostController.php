@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Amar\Framework\Controller\AbstractController;
+use Amar\Framework\Http\RedirectResponse;
 use Amar\Framework\Http\Request;
 use Amar\Framework\Http\Response;
 use App\Entity\Post;
@@ -32,13 +33,15 @@ class PostController extends AbstractController
     return $this->render('create-post.html.twig');
   }
 
-  public function store(): void
+  public function store(): Response
   {
     $title = $this->request->postParams['title'];
     $body = $this->request->postParams['body'];
 
     $post = Post::create($title, $body);
     $this->postMapper->save($post);
+
+    return new RedirectResponse('/posts');
     //dd($post);
   }
 }
