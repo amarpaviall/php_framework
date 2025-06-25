@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-<h1>Welcome to Tech</h1>
-<h2>you're learning about Post ID {{ postId }}</h2>
+<h1>{{post.title}}</h1>
+<p>{{ post.body }}</p>
 {% endblock %}

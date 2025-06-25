@@ -7,19 +7,23 @@ use Amar\Framework\Http\Request;
 use Amar\Framework\Http\Response;
 use App\Entity\Post;
 use App\Repository\PostMapper;
+use App\Repository\PostRepository;
 
 class PostController extends AbstractController
 {
 
-  public function __construct(private PostMapper $postMapper) {}
+  public function __construct(
+    private PostMapper $postMapper,
+    private PostRepository $postRepository
+  ) {}
 
   public function show(int $id): Response
   {
     // $content = "This is Post {$id}";
     // return new Response($content);
-
+    $post = $this->postRepository->findOrFail($id);
     return $this->render('post.html.twig', [
-      'postId' => $id
+      'post' => $post
     ]);
   }
 
@@ -35,6 +39,6 @@ class PostController extends AbstractController
 
     $post = Post::create($title, $body);
     $this->postMapper->save($post);
-    dd($post);
+    //dd($post);
   }
 }
