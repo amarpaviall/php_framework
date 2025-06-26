@@ -20,3 +20,7 @@ $response = $kernal->handle($request);
 
 //dd($response);
 $response->send();
+
+$kernal->terminate($request, $response);
+
+//dd($_SESSION);
