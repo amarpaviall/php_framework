@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
+use Amar\Framework\Authentication\AuthUserInterface;
 use DateTimeImmutable;
 
-class User
+class User implements AuthUserInterface
 {
 
   public function __construct(
@@ -29,7 +30,10 @@ class User
   {
     $this->id = $id;
   }
-
+  public function getAuthId(): int
+  {
+    return $this->id;
+  }
   public function getUsername(): string
   {
     return $this->username;

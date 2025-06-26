@@ -3,7 +3,9 @@
 use App\Controller\HomeController;
 use App\Controller\PostController;
 use Amar\Framework\Http\Response;
+use App\Controller\DashboardController;
 use App\Controller\RegistrationController;
+use App\Controller\LoginController;
 
 return [
   ['GET', '/', [HomeController::class, 'index']],
@@ -13,6 +15,11 @@ return [
 
   ['GET', '/register', [RegistrationController::class, 'index']],
   ['POST', '/register', [RegistrationController::class, 'register']],
+
+  ['GET', '/login', [LoginController::class, 'index']],
+  ['POST', '/login', [LoginController::class, 'login']],
+
+  ['GET', '/dashboard', [DashboardController::class, 'index']],
 
   ['GET', '/hello/{name:.+}', function (string $name) {
     return new Response("Hello $name");

@@ -6,6 +6,7 @@ namespace Amar\Framework\Session;
 class Session implements SessionInterface
 {
   private const FLASH_KEY = 'flash';
+  public const AUTH_KEY = 'auth_id';
 
   public function start(): void
   {

@@ -1,5 +1,6 @@
 <?php
 
+use Amar\Framework\Authentication\SessionAuthentication;
 use Amar\Framework\Console\Application;
 use Amar\Framework\Console\Command\MigrateDatabase;
 use Amar\Framework\Controller\AbstractController;
@@ -13,6 +14,7 @@ use Amar\Framework\Routing\RouterInterface;
 use Amar\Framework\Session\Session;
 use Amar\Framework\Session\SessionInterface;
 use Amar\Framework\Template\TwigFactory;
+use App\Repository\UserRepository;
 use Doctrine\DBAL\Connection;
 use League\Container\Argument\Literal\ArrayArgument;
 use League\Container\Argument\Literal\StringArgument;
@@ -118,5 +120,8 @@ $container->add(RouteDispatch::class)->addArguments(
     $container
   ]
 );
+
+$container->add(SessionAuthentication::class)
+  ->addArguments([UserRepository::class, SessionInterface::class]);
 
 return $container;
