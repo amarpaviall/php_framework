@@ -2,14 +2,27 @@
 
 declare(strict_types=1);
 
+use Amar\Framework\EventDispatcher\EventDispatcher;
+use Amar\Framework\Http\Event\ResponseEvent;
 use Amar\Framework\Http\Kernal;
 use Amar\Framework\Http\Request;
+use App\EventListener\ContentLengthListener;
+use App\EventListener\InternalErrorListener;
 
 define('BASE_PATH', dirname(__DIR__));
 
 require_once BASE_PATH . "/vendor/autoload.php";
 
 $container = require BASE_PATH . "/config/services.php";
+
+$eventDispatcher = $container->get(EventDispatcher::class);
+$eventDispatcher->addListener(
+  ResponseEvent::class,
+  new InternalErrorListener()
+)->addListener(
+  ResponseEvent::class,
+  new ContentLengthListener()
+);
 
 $request = Request::createFromGlobals();
 

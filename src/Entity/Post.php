@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
+use Amar\Framework\Dbal\Entity;
 use DateTimeImmutable;
 
-class Post
+class Post extends Entity
 {
 
   public function __construct(

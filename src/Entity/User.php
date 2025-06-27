@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use Amar\Framework\Authentication\AuthUserInterface;
+use Amar\Framework\Dbal\Entity;
 use DateTimeImmutable;
 
-class User implements AuthUserInterface
+class User extends Entity implements AuthUserInterface
 {
 
   public function __construct(

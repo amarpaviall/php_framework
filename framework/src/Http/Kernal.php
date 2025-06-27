@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Amar\Framework\Http;
 
+use Amar\Framework\EventDispatcher\EventDispatcher;
+use Amar\Framework\Http\Event\ResponseEvent;
 use Amar\Framework\Http\Middleware\RequestHandlerInterface;
 use Amar\Framework\Routing\RouterInterface;
 use Doctrine\DBAL\Connection;
@@ -14,9 +16,9 @@ class Kernal
 {
   private string $appEnv;
   public function __construct(
-    private RouterInterface $router,
     private ContainerInterface $container,
-    private RequestHandlerInterface $requestHandler
+    private RequestHandlerInterface $requestHandler,
+    private EventDispatcher $eventDispatcher
   ) {
     $this->appEnv = $this->container->get('APP_ENV');
   }
@@ -31,7 +33,9 @@ class Kernal
       $response = $this->createExceptionResponse($exception);
     }
 
+    //$response->setStatus(501); // to test isPropagationStopped
     // dd($response) ;
+    $this->eventDispatcher->dispatch(new ResponseEvent($request, $response));
 
     return $response;
   }

@@ -2,19 +2,19 @@
 
 namespace App\Repository;
 
+use Amar\Framework\Dbal\DataMapper;
 use App\Entity\Post;
-use Doctrine\DBAL\Connection;
 
 class PostMapper
 {
   public function __construct(
-    private Connection $connection
+    private DataMapper $dataMapper
   ) {}
 
   public function save(Post $post): void
   {
 
-    $stml = $this->connection->prepare("
+    $stml = $this->dataMapper->getConnection()->prepare("
     INSERT INTO posts (title, body, created_at) 
     VALUES (:title, :body, :created_at)");
 
@@ -24,7 +24,8 @@ class PostMapper
 
     $stml->executeStatement();
 
-    $id = $this->connection->lastInsertId();
+    $id = $this->dataMapper->save($post);
+    //dd($id);
 
     $post->setId($id);
   }

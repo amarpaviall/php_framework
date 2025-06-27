@@ -20,6 +20,14 @@ class VerifyCsrfToken implements MiddlewareInterface
     //$tokenFromRequest = 'fake_csrf_token'; // For testing purposes, replace with actual token retrieval logic
 
     // Throw an exception on mismatch
+
+    if (!is_string($tokenFromSession) || !is_string($tokenFromRequest)) {
+      $exception = new TokenMismatchException("CSRF token missing.");
+      $exception->setStatusCode(Response::HTTP_FORBIDDEN);
+      throw $exception;
+    }
+
+
     if (!hash_equals($tokenFromSession, $tokenFromRequest)) {
       //dd($tokenFromRequest, $tokenFromSession);
 

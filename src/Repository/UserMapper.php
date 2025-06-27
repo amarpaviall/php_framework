@@ -2,19 +2,19 @@
 
 namespace App\Repository;
 
+use Amar\Framework\Dbal\DataMapper;
 use App\Entity\User;
-use Doctrine\DBAL\Connection;
 
 class UserMapper
 {
   public function __construct(
-    private Connection $connection
+    private DataMapper $dataMapper
   ) {}
 
   public function save(User $user): void
   {
 
-    $stml = $this->connection->prepare("
+    $stml = $this->dataMapper->getConnection()->prepare("
     INSERT INTO users (username, password, created_at) 
     VALUES (:username, :password, :created_at)");
 
@@ -24,7 +24,7 @@ class UserMapper
 
     $stml->executeStatement();
 
-    $id = $this->connection->lastInsertId();
+    $id = $this->dataMapper->save($user);
 
     $user->setId($id);
   }

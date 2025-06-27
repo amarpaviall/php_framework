@@ -5,6 +5,7 @@ use Amar\Framework\Console\Application;
 use Amar\Framework\Console\Command\MigrateDatabase;
 use Amar\Framework\Controller\AbstractController;
 use Amar\Framework\Dbal\ConnectionFactory;
+use Amar\Framework\EventDispatcher\EventDispatcher;
 use Amar\Framework\Http\Kernal;
 use Amar\Framework\Http\Middleware\ExtractRouteInfo;
 use Amar\Framework\Http\Middleware\RequestHandler;
@@ -53,12 +54,13 @@ $container->add(RouterInterface::class, Router::class);
 
 $container->add(RequestHandlerInterface::class, RequestHandler::class)->addArgument($container);
 
+$container->addShared(EventDispatcher::class);
 
 $container->add(Kernal::class)
   ->addArguments([
-    RouterInterface::class,
     $container,
-    RequestHandlerInterface::class
+    RequestHandlerInterface::class,
+    EventDispatcher::class
   ]);
 
 $container->add(Application::class)->addArgument($container);
