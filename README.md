@@ -1,4 +1,4 @@
-# php-framework-pro
+# php-framework
 
 A lightweight, modular PHP web framework for rapid application development and learning modern PHP practices.
 
