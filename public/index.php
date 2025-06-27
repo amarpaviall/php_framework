@@ -15,14 +15,8 @@ require_once BASE_PATH . "/vendor/autoload.php";
 
 $container = require BASE_PATH . "/config/services.php";
 
-$eventDispatcher = $container->get(EventDispatcher::class);
-$eventDispatcher->addListener(
-  ResponseEvent::class,
-  new InternalErrorListener()
-)->addListener(
-  ResponseEvent::class,
-  new ContentLengthListener()
-);
+// bootstrapping
+require BASE_PATH . '/bootstrap/bootstrap.php';
 
 $request = Request::createFromGlobals();
 
