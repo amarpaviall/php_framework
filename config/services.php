@@ -6,6 +6,7 @@ use Amar\Framework\Console\Command\MigrateDatabase;
 use Amar\Framework\Controller\AbstractController;
 use Amar\Framework\Dbal\ConnectionFactory;
 use Amar\Framework\Http\Kernal;
+use Amar\Framework\Http\Middleware\ExtractRouteInfo;
 use Amar\Framework\Http\Middleware\RequestHandler;
 use Amar\Framework\Http\Middleware\RequestHandlerInterface;
 use Amar\Framework\Http\Middleware\RouteDispatch;
@@ -23,22 +24,23 @@ use Symfony\Component\Dotenv\Dotenv;
 
 
 $dotenv = new Dotenv();
-$dotenv->load(BASE_PATH . '/.env');
+$dotenv->load(dirname(__DIR__) . '/.env');
 //dd($_SERVER['APP_ENV']);
 
 $container =  new \League\Container\Container();
 $container->delegate(new ReflectionContainer(true));
 
 // parameters for application config
-
-$routes = include BASE_PATH . '/routes/web.php';
-$templatesPath = BASE_PATH . '/templates';
+$basePath = dirname(__DIR__);
+$container->add('basePath', new StringArgument($basePath));
+$routes = include $basePath  . '/routes/web.php';
+$templatesPath = $basePath  . '/templates';
 //$appEnv = 'dev';
 $appEnv = $_SERVER['APP_ENV'];
 
 $container->add('APP_ENV', new StringArgument($appEnv));
 
-$databaseUrl = 'sqlite:///' . BASE_PATH . '/var/db.sqlite';
+$databaseUrl = 'sqlite:///' . $basePath  . '/var/db.sqlite';
 
 $container->add(
   'base-commands-namespace',
@@ -48,11 +50,6 @@ $container->add(
 // services
 
 $container->add(RouterInterface::class, Router::class);
-
-$container->extend(RouterInterface::class)->addMethodCall(
-  'setRoute',
-  [new ArrayArgument($routes)]
-);
 
 $container->add(RequestHandlerInterface::class, RequestHandler::class)->addArgument($container);
 
@@ -111,7 +108,7 @@ $container->add(
   MigrateDatabase::class
 )->addArguments([
   Connection::class,
-  new StringArgument(BASE_PATH . '/migrations')
+  new StringArgument($basePath . '/migrations')
 ]);
 
 $container->add(RouteDispatch::class)->addArguments(
@@ -123,5 +120,10 @@ $container->add(RouteDispatch::class)->addArguments(
 
 $container->add(SessionAuthentication::class)
   ->addArguments([UserRepository::class, SessionInterface::class]);
+
+$container->add(ExtractRouteInfo::class)
+  ->addArgument(new \League\Container\Argument\Literal\ArrayArgument($routes));
+
+
 
 return $container;

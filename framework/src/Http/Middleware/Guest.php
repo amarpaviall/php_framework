@@ -8,7 +8,7 @@ use Amar\Framework\Http\Request;
 use Amar\Framework\Http\Response;
 use Amar\Framework\Session\SessionInterface;
 
-class Authenticate implements MiddlewareInterface
+class Guest implements MiddlewareInterface
 {
   public function __construct(private SessionInterface $session) {}
 
@@ -16,9 +16,8 @@ class Authenticate implements MiddlewareInterface
   {
     $this->session->start();
 
-    if (!$this->session->has(SessionAuthentication::AUTH_KEY)) {
-      $this->session->setFlash('error', 'Please sign in');
-      return new RedirectResponse('/login');
+    if ($this->session->has(SessionAuthentication::AUTH_KEY)) {
+      return new RedirectResponse('/dashboard');
     }
 
     return $requestHandler->handle($request);

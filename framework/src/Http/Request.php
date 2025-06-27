@@ -9,6 +9,11 @@ use Amar\Framework\Session\SessionInterface;
 class Request
 {
   private SessionInterface $session;
+  private mixed $routeHandler;
+  private array $routeHandlerArgs;
+
+
+
   public function __construct(
     public readonly array $getParams,
     public readonly array $postParams,
@@ -48,5 +53,24 @@ class Request
   public function input($key): mixed
   {
     return $this->postParams[$key];
+  }
+  public function getRouteHandler(): mixed
+  {
+    return $this->routeHandler;
+  }
+
+  public function setRouteHandler(mixed $routeHandler): void
+  {
+    $this->routeHandler = $routeHandler;
+  }
+
+  public function getRouteHandlerArgs(): array
+  {
+    return $this->routeHandlerArgs;
+  }
+
+  public function setRouteHandlerArgs(array $routeHandlerArgs): void
+  {
+    $this->routeHandlerArgs = $routeHandlerArgs;
   }
 }

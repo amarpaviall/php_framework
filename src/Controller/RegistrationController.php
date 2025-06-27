@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Amar\Framework\Authentication\SessionAuthentication;
 use Amar\Framework\Controller\AbstractController;
 use Amar\Framework\Http\RedirectResponse;
 use Amar\Framework\Http\Response;
@@ -13,6 +14,7 @@ class RegistrationController extends AbstractController
 
   public function __construct(
     private UserMapper $userMapper,
+    private SessionAuthentication $authComponent
   ) {}
 
   public function index()
@@ -59,8 +61,9 @@ class RegistrationController extends AbstractController
       sprintf('User %s created', $user->getUsername())
     );
     // Log the user in
+    $this->authComponent->login($user);
 
     // Redirect to somewhere useful
-    return new RedirectResponse('/');
+    return new RedirectResponse('/dashboard');
   }
 }

@@ -11,9 +11,9 @@ use Psr\Container\ContainerInterface;
 class RequestHandler implements RequestHandlerInterface
 {
   private array $middleware = [
+    ExtractRouteInfo::class,
     StartsSession::class,
-    Authenticate::class,
-    //Success::class,
+    VerifyCsrfToken::class,
     RouteDispatch::class
   ];
   public function __construct(private ContainerInterface $container) {}
@@ -34,5 +34,11 @@ class RequestHandler implements RequestHandlerInterface
     $response = $middleware->process($request, $this);
 
     return $response;
+  }
+  public function injectMiddleware(array $middleware): void
+  {
+
+    //dd($this->middleware);
+    array_splice($this->middleware, 0, 0, $middleware);
   }
 }

@@ -26,7 +26,6 @@ class Kernal
       //dd($this->container->get(Connection::class));
       //throw new Exception('EXCEPTION IS KERNAL');
 
-
       $response = $this->requestHandler->handle($request);
     } catch (\Exception $exception) {
       $response = $this->createExceptionResponse($exception);

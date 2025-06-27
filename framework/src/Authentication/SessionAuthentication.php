@@ -7,6 +7,7 @@ use Amar\Framework\Session\SessionInterface;
 class SessionAuthentication implements SessionAuthInterface
 {
   private AuthUserInterface $user;
+  public const AUTH_KEY = 'auth_id';
 
   public function __construct(
     private AuthRepositoryInterface $authRepository,
@@ -37,7 +38,7 @@ class SessionAuthentication implements SessionAuthInterface
     $this->session->start();
 
     // Log the user in
-    $this->session->set(Session::AUTH_KEY, $user->getAuthId());
+    $this->session->set(self::AUTH_KEY, $user->getAuthId());
 
     // Set the user
     $this->user = $user;
@@ -45,7 +46,7 @@ class SessionAuthentication implements SessionAuthInterface
 
   public function logout()
   {
-    $this->session->remove(Session::AUTH_KEY);
+    $this->session->remove(self::AUTH_KEY);
   }
 
   public function getUser(): AuthUserInterface
