@@ -4,13 +4,18 @@ A lightweight, modular PHP web framework for rapid application development and l
 
 ## Features
 
-- Custom HTTP kernel and routing system
-- Middleware support (including CSRF protection)
-- Event dispatcher and listeners
-- MVC architecture
-- Doctrine DBAL integration for database access
-- Session management
-- Simple authentication system
+Features
+
+- **Custom HTTP Kernel & Routing:** Flexible request handling and route management.
+- **Middleware Support:** Easily add features like CSRF protection and authentication.
+- **Event Dispatcher & Listeners:** Decoupled event-driven architecture.
+- **MVC Structure:** Clean separation of concerns for controllers, models, and views.
+- **Twig Templating:** Use `base.html.twig` for consistent, extendable layouts.
+- **Bootstrap 5 Integration:** Responsive and modern UI out of the box.
+- **Session Management:** Secure user sessions and flash messaging.
+- **CSRF Protection:** Secure forms with built-in CSRF middleware.
+- **Doctrine DBAL Integration:** Powerful and flexible database access.
+- **SOLID Principles:** Designed with maintainability and extensibility in mind.
 
 ## Getting Started
 
